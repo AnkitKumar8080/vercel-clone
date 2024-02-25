@@ -1,0 +1,50 @@
+version: "3.8"
+services:
+  redis:
+    image: redis:latest
+    container_name: redis-server
+    command: redis-server
+    volumes:
+      - vercel_redis:/var/lib/redis
+      - vercel_redis_config:/usr/local/etc/redis/redis.conf
+    networks:
+      - vercel-network
+
+  build-server:
+    build:
+      context: ./build-server
+      dockerfile: Dockerfile
+    container_name: build-server
+    restart: unless-stopped
+    networks:
+      - vercel-network
+
+  api-server:
+    build:
+      context: ./api-server
+      dockerfile: Dockerfile
+    container_name: api-server
+    restart: unless-stopped
+    ports:
+      - "4001:4001"
+    networks:
+      - vercel-network
+
+  s3-reverse-proxy:
+    build:
+      context: ./s3-reverse-proxy
+      dockerfile: Dockerfile
+    container_name: s3-reverse-proxy
+    restart: unless-stopped
+    ports:
+      - "4003:4003"
+    networks:
+      - vercel-network
+
+volumes:
+  vercel_redis:
+  vercel_redis_config:
+
+networks:
+  vercel-network:
+    driver: bridge
