@@ -52,9 +52,11 @@ This project is designed to automate the react build, deployment, and serving of
 ### S3 Reverse Proxy
 
 - The S3 reverse proxy serves static files from an S3 bucket.
-- Access static files via `http://localhost:4003`.
+- Access static files via `http://subdomain.localhost:4003`.
 
 ## Environment Variables
+
+Change the env variables in each of the following 3 - dir
 
 - **REDIS_SERVER_HOST**: Hostname of the Redis server.
 - **REDIS_SERVER_PORT**: Port of the Redis server.
